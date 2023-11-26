@@ -1,5 +1,9 @@
-import { Candidate } from 'src/candidates/entities/candidate.entity';
-import { Entity, Column, PrimaryGeneratedColumn, OneToOne } from 'typeorm';
+import {
+    Column,
+    CreateDateColumn,
+    Entity,
+    PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity('votings')
 export class Voting {
@@ -7,21 +11,11 @@ export class Voting {
     id: number;
 
     @Column()
-    user_agent: string;
-
-    @Column()
     ip: string;
 
     @Column()
-    cargo: string;
+    value: string;
 
-    @Column()
-    candidate_id: string;
-
-    @Column()
-    @OneToOne(() => Candidate, (candidate) => candidate.voting)
-    candidate: Candidate;
-
-    @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+    @CreateDateColumn()
     created_at: Date;
 }

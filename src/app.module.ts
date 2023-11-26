@@ -1,34 +1,26 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { UsersModule } from './users/users.module';
-import { AuthModule } from './auth/auth.module';
-import { VotingsModule } from './votings/votings.module';
-import { CandidatesModule } from './candidates/candidates.module';
-import { SessionsModule } from './sessions/sessions.module';
+import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { dirname } from 'path';
-import { ProfilesModule } from './profiles/profiles.module';
+import { DBConfig } from './app.config';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+import { CandidatesModule } from './candidates/candidates.module';
+import { CollegesModule } from './colleges/colleges.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
     imports: [
         TypeOrmModule.forRoot({
-            type: 'postgres',
-            host: 'localhost',
-            port: 5432,
-            username: 'postgres',
-            password: '.....',
-            database: 'test',
+            ...DBConfig,
             entities: [dirname + '/**/*.entity{.ts,.js}'],
-            synchronize: true,
-            autoLoadEntities: true,
+        }),
+        ConfigModule.forRoot({
+            isGlobal: true,
         }),
         UsersModule,
-        AuthModule,
-        VotingsModule,
         CandidatesModule,
-        SessionsModule,
-        ProfilesModule,
+        CollegesModule,
     ],
     controllers: [AppController],
     providers: [AppService],

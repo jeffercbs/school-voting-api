@@ -1,22 +1,24 @@
-import { Controller, Delete, Get, Param, UseGuards } from '@nestjs/common';
-import { JwtAuthGuard } from 'src/auth/auth.guard';
-import { Role } from 'src/auth/constant';
-import { RoleGuard } from 'src/auth/role.auth';
+import { Controller, Delete, Get, Param, Post, Body } from '@nestjs/common';
 import { UsersService } from './users.service';
+import { CreateUserDto } from './dto/create-user.dto';
+import { SearchUserDto } from './dto/search-user.dto';
 
 @Controller('users')
 export class UsersController {
     constructor(private readonly usersService: UsersService) {}
 
-    @UseGuards(JwtAuthGuard)
-    @UseGuards(new RoleGuard(Role.TEACHER))
+    @Post()
+    createUsers(@Body() user: CreateUserDto) {
+        return this.usersService.createUser(user);
+    }
+
     @Get()
-    findAll() {
-        return this.usersService.findAll();
+    findAll(@Body() b: SearchUserDto) {
+        return this.usersService.findAll(b);
     }
 
     @Get(':id')
-    findUser(@Param('id') id: string) {
+    findUser(@Param('id') id: number) {
         return this.usersService.findUser(id);
     }
 

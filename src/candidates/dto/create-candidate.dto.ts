@@ -1,3 +1,4 @@
 export class CreateCandidateDto {
-    name: string;
+    user_id: string;
+    rol: string;
 }

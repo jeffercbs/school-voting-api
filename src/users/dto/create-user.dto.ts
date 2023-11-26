@@ -1,11 +1,12 @@
-import { IsNotEmpty } from 'class-validator';
+import { Transform } from 'class-transformer';
+import { IsNotEmpty, IsNumberString } from 'class-validator';
 
 export class CreateUserDto {
-    // Identity document legally issued by the government
+    @IsNumberString()
+    @Transform(({ value }) => parseInt(value))
+    id: number;
     @IsNotEmpty()
-    id: string;
-
-    // Electoral code issued by the institution for each user
+    code: string;
     @IsNotEmpty()
-    ce: string;
+    collegeId: string;
 }

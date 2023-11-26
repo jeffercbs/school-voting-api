@@ -4,35 +4,57 @@ import {
     NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { College } from 'src/colleges/entities/college.entity';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
+import { SearchUserDto } from './dto/search-user.dto';
 import { User } from './entities/user.entity';
 
 @Injectable()
 export class UsersService {
     constructor(
         @InjectRepository(User)
-        private usersRepository: Repository<User>,
+        private readonly userRepository: Repository<User>,
+        @InjectRepository(College)
+        private readonly collegeRepository: Repository<College>,
     ) {}
 
-    async createUser(user: CreateUserDto) {
-        const userFound = await this.usersRepository.findOne({
-            where: { id: user.id },
+    async createUser(u: CreateUserDto) {
+        const collegeFound = await this.collegeRepository.findOne({
+            where: { id: u.collegeId },
+        });
+        const userFound = await this.userRepository.findOne({
+            where: { id: u.id },
         });
 
         if (userFound) {
             throw new ConflictException('User already exists');
         }
-        const newUser = this.usersRepository.create(user);
-        return this.usersRepository.save(newUser);
+
+        if (!collegeFound) {
+            throw new NotFoundException('College not found');
+        }
+
+        const user = this.userRepository.create({
+            ...u,
+            college: collegeFound,
+        });
+
+        return await this.userRepository.save(user);
     }
 
-    findAll() {
-        return `This action returns all users`;
+    findAll(b: SearchUserDto) {
+        if (b.collegeId === undefined) {
+            throw new NotFoundException('CollegeId not found');
+        }
+
+        return this.userRepository.find({
+            where: { collegeId: b.collegeId },
+        });
     }
 
-    findUser(id: string) {
-        const user = this.usersRepository.findOne({ where: { id } });
+    findUser(id: number) {
+        const user = this.userRepository.findOne({ where: { id } });
 
         if (!user) {
             throw new NotFoundException('User not found');

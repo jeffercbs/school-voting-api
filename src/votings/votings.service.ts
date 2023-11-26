@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { CreateVotingDto } from './dto/create-voting.dto';
-import { UpdateVotingDto } from './dto/update-voting.dto';
 
 @Injectable()
 export class VotingsService {
@@ -14,10 +13,6 @@ export class VotingsService {
 
     findOne(id: number) {
         return `This action returns a #${id} voting`;
-    }
-
-    update(id: number, updateVotingDto: UpdateVotingDto) {
-        return `This action updates a #${id} voting`;
     }
 
     remove(id: number) {
