@@ -1,12 +1,20 @@
 import { Transform } from 'class-transformer';
-import { IsNotEmpty, IsNumberString } from 'class-validator';
+import { IsNotEmpty } from 'class-validator';
 
 export class CreateUserDto {
-    @IsNumberString()
+    @IsNotEmpty()
+    name: string;
+
+    @IsNotEmpty()
+    bio: string;
+
+    @IsNotEmpty()
     @Transform(({ value }) => parseInt(value))
-    id: number;
+    dni: number;
+
     @IsNotEmpty()
-    code: string;
+    user: string;
+
     @IsNotEmpty()
-    collegeId: string;
+    password: string;
 }

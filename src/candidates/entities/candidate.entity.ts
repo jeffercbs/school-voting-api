@@ -1,5 +1,12 @@
 import { User } from 'src/users/entities/user.entity';
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Vote } from 'src/votes/entities/vote.entity';
+import {
+    Column,
+    Entity,
+    OneToMany,
+    OneToOne,
+    PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity('candidates')
 export class Candidate {
@@ -11,4 +18,19 @@ export class Candidate {
 
     @OneToOne(() => User, (User) => User.id)
     user_id: User;
+
+    @Column()
+    is_approved: boolean;
+
+    @Column({ type: 'varchar', length: 225 })
+    name: string;
+
+    @Column({ type: 'varchar', length: 45 })
+    position: string;
+
+    @Column()
+    link: string;
+
+    @OneToMany(() => Vote, (vote) => vote.candidate_id, { cascade: true })
+    votes: Vote[];
 }

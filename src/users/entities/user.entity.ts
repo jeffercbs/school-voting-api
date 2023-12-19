@@ -1,31 +1,44 @@
-import { College } from 'src/colleges/entities/college.entity';
+import { Role } from 'src/auth/decorators/roles';
+import { School } from 'src/schools/entities/school.entity';
 import {
     Column,
     CreateDateColumn,
     Entity,
+    JoinColumn,
     OneToOne,
-    PrimaryColumn,
+    PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from 'typeorm';
 
 @Entity('users')
 export class User {
-    @PrimaryColumn({ type: 'numeric', precision: 10, scale: 0, unique: true })
-    id: number;
+    @PrimaryGeneratedColumn('uuid')
+    id: string;
+
+    @Column()
+    name: string;
+
+    @Column({ default: '' })
+    bio: string;
+
+    @Column({ type: 'numeric', precision: 10, scale: 0, unique: true })
+    dni: number;
+
+    @Column()
+    password: string;
 
     @Column({ unique: true })
-    code: string;
+    user: string;
+
+    @Column({ type: 'enum', enum: Role, default: Role.Colaborator })
+    role: Role;
 
     @Column({ default: true })
     isActive: boolean;
 
-    @Column({ type: 'varchar', length: 225 })
-    collegeId: string;
-
-    @OneToOne(() => College, (college) => college.users, {
-        cascade: true,
-    })
-    college: College;
+    @OneToOne(() => School)
+    @JoinColumn({ name: 'school_id' })
+    school: School;
 
     @CreateDateColumn()
     createdAt: Date;
