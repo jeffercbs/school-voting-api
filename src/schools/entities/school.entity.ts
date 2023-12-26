@@ -15,7 +15,7 @@ export class School {
     id: string;
 
     @Column()
-    name: string;
+    institute: string;
 
     @Column()
     municipality: string;
@@ -26,16 +26,16 @@ export class School {
     @Column()
     address: string;
 
-    @Column()
+    @Column({ default: '' })
     phone: string;
 
-    @Column()
+    @Column({ default: '' })
     email: string;
 
-    @Column()
+    @Column({ default: '' })
     website: string;
 
-    @Column()
+    @Column({ default: '' })
     description: string;
 
     @Column({ nullable: true, default: null })

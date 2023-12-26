@@ -9,21 +9,23 @@ import { SchoolsModule } from './schools/schools.module';
 import { StudentsModule } from './students/students.module';
 import { UsersModule } from './users/users.module';
 import { VotesModule } from './votes/votes.module';
+import { CertificateModule } from './certificate/certificate.module';
 
 @Module({
     imports: [
-        ConfigModule.forRoot(),
+        ConfigModule.forRoot({
+            isGlobal: true,
+        }),
         TypeOrmModule.forRoot({
-            logger: 'debug',
             type: 'postgres',
             host: 'localhost',
             port: 5432,
             username: 'username',
             password: 'password',
             database: 'voting',
-            entities: [__dirname + '/**/*.entity{.ts,.js}'],
-            synchronize: true,
             autoLoadEntities: true,
+            synchronize: true,
+            entities: [__dirname + '/**/*.entity{.ts,.js}'],
         }),
 
         UsersModule,
@@ -33,6 +35,7 @@ import { VotesModule } from './votes/votes.module';
         VotesModule,
         EventsModule,
         StudentsModule,
+        CertificateModule,
     ],
 })
 export class AppModule {}

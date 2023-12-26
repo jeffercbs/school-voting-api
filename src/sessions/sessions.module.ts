@@ -6,6 +6,6 @@ import { SessionsService } from './sessions.service';
 @Module({
     imports: [TypeOrmModule.forFeature([Session])],
     providers: [SessionsService],
-    exports: [SessionsService],
+    exports: [SessionsService, TypeOrmModule],
 })
 export class SessionsModule {}

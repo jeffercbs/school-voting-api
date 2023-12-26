@@ -11,7 +11,13 @@ export class Vote {
     event: Event;
 
     @Column()
-    user_id: string;
+    code: string;
+
+    @Column()
+    user_agent: string;
+
+    @Column()
+    ip: string;
 
     @OneToOne(() => Candidate, (candidate) => candidate.votes)
     candidate_id: Candidate;

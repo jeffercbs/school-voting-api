@@ -1,9 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { CreateVoteDto } from './dto/create-vote.dto';
-import { UpdateVoteDto } from './dto/update-vote.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Vote } from './entities/vote.entity';
 import { Repository } from 'typeorm';
+import { CreateVoteDto } from './dto/create-vote.dto';
+import { Vote } from './entities/vote.entity';
 
 @Injectable()
 export class VotesService {
@@ -13,7 +12,7 @@ export class VotesService {
     ) {}
 
     create(createVoteDto: CreateVoteDto) {
-        return 'This action adds a new vote';
+        return createVoteDto;
     }
 
     findAll() {
@@ -22,13 +21,5 @@ export class VotesService {
 
     findOne(id: number) {
         return `This action returns a #${id} vote`;
-    }
-
-    update(id: number, updateVoteDto: UpdateVoteDto) {
-        return `This action updates a #${id} vote`;
-    }
-
-    remove(id: number) {
-        return `This action removes a #${id} vote`;
     }
 }

@@ -12,11 +12,23 @@ import {
 
 @Entity('students')
 export class Student {
-    @PrimaryColumn()
-    id: string;
+    @PrimaryColumn({ type: 'numeric', unique: true, precision: 10, scale: 0 })
+    id: number;
+
+    @Column()
+    first_name: string;
+
+    @Column()
+    last_name: string;
+
+    @Column()
+    phone: string;
 
     @Column()
     course: string;
+
+    @Column()
+    school_id: string;
 
     @Column({ default: true })
     isActive: boolean;

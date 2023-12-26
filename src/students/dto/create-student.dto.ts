@@ -5,6 +5,9 @@ export class CreateStudentDto {
     id: number;
 
     @IsNotEmpty()
+    school_id: string;
+
+    @IsNotEmpty()
     code: string;
 
     @IsNotEmpty()

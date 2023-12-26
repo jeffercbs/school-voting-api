@@ -3,10 +3,10 @@ import { IsNotEmpty } from 'class-validator';
 
 export class CreateUserDto {
     @IsNotEmpty()
-    name: string;
+    first_name: string;
 
     @IsNotEmpty()
-    bio: string;
+    last_name: string;
 
     @IsNotEmpty()
     @Transform(({ value }) => parseInt(value))

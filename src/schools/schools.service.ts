@@ -1,26 +1,36 @@
 import { Injectable } from '@nestjs/common';
-import { CreateSchoolDto } from './dto/create-school.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Role, Roles } from 'src/auth/decorators/roles';
+import { Repository } from 'typeorm';
 import { UpdateSchoolDto } from './dto/update-school.dto';
+import { School } from './entities/school.entity';
 
 @Injectable()
 export class SchoolsService {
-    create(createSchoolDto: CreateSchoolDto) {
-        return 'This action adds a new school';
-    }
+    constructor(
+        @InjectRepository(School)
+        private schoolRepository: Repository<School>,
+    ) {}
 
     findAll() {
-        return `This action returns all schools`;
+        return this.schoolRepository.find({
+            select: {
+                id: true,
+                institute: true,
+                description: true,
+                logo: true,
+                municipality: true,
+                department: true,
+            },
+        });
     }
 
-    findOne(id: number) {
-        return `This action returns a #${id} school`;
+    findOne(id: string) {
+        return this.schoolRepository.findOne({ where: { id }, cache: true });
     }
 
-    update(id: number, updateSchoolDto: UpdateSchoolDto) {
-        return `This action updates a #${id} school`;
-    }
-
-    remove(id: number) {
-        return `This action removes a #${id} school`;
+    @Roles(Role.Admin)
+    update(id: string, updateSchoolDto: UpdateSchoolDto) {
+        return this.schoolRepository.update(id, updateSchoolDto);
     }
 }
