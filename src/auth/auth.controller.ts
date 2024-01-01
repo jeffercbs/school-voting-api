@@ -1,10 +1,11 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, Res } from '@nestjs/common';
+import { Request, Response } from 'express';
 import { AuthService } from './auth.service';
+import { Public } from './decorators/public';
 // dtos
 import { CreateSchoolDto } from 'src/schools/dto/create-school.dto';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { SignInDto } from './dto/signin-auth.dto';
-import { Public } from './decorators/public';
 
 @Controller('auth')
 export class AuthController {
@@ -12,8 +13,15 @@ export class AuthController {
 
     @Post('signin')
     @Public()
-    signIn(@Body() req: SignInDto) {
-        return this.authService.signin(req);
+    signIn(@Body() req: SignInDto, @Res({ passthrough: true }) res: Response) {
+        return this.authService.signin(req, res);
+    }
+
+    @Get('user')
+    @Public()
+    getUser(@Req() req: Request) {
+        const token = req.cookies['access_token'] as string;
+        return this.authService.getUser(token);
     }
 
     @Post('signup')
@@ -23,16 +31,5 @@ export class AuthController {
         @Body('school') school: CreateSchoolDto,
     ) {
         return this.authService.signup(user, school);
-    }
-
-    @Get('me')
-    me(@Body('id') id: string) {
-        return this.authService.me(id);
-    }
-
-    @Post('refresh')
-    @Public()
-    refresh() {
-        return this.authService.refresh();
     }
 }
