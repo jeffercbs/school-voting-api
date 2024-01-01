@@ -1,5 +1,5 @@
 import { Transform } from 'class-transformer';
-import { IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, MinLength } from 'class-validator';
 
 export class CreateUserDto {
     @IsNotEmpty()
@@ -13,8 +13,9 @@ export class CreateUserDto {
     dni: number;
 
     @IsNotEmpty()
-    user: string;
+    username: string;
 
     @IsNotEmpty()
+    @MinLength(6)
     password: string;
 }

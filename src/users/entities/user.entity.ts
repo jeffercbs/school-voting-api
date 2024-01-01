@@ -31,13 +31,10 @@ export class User {
     password: string;
 
     @Column({ unique: true })
-    user: string;
+    username: string;
 
     @Column({ type: 'enum', enum: Role, default: Role.Colaborator })
     role: Role;
-
-    @Column({ default: true })
-    isActive: boolean;
 
     @OneToOne(() => School)
     @JoinColumn({ name: 'school_id' })

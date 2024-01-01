@@ -1,3 +1,3 @@
 export class SearchUserDto {
-    schoolId: string;
+    username: string;
 }
