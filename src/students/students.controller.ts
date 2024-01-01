@@ -18,8 +18,8 @@ export class StudentsController {
 
     @Get()
     @Roles(Role.Admin)
-    findAll() {
-        return this.studentsService.findAll();
+    findAll(@Body('school_id') school_id: string) {
+        return this.studentsService.findAll(school_id);
     }
 
     @Post()

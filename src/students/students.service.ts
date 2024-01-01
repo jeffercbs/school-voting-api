@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+    HttpException,
+    HttpStatus,
+    Injectable,
+    NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateStudentDto } from './dto/create-student.dto';
@@ -14,18 +19,34 @@ export class StudentsService {
 
     create(createStudentDto: CreateStudentDto) {
         try {
-            const student = this.studentRepository.create(createStudentDto);
-            return this.studentRepository.save(student);
+            const students = this.studentRepository.create(createStudentDto);
+            this.studentRepository.save(students);
+
+            return { message: 'Student created successfully' };
         } catch (error) {
-            return { message: 'Try again in a few seconds' };
+            throw new HttpException(
+                {
+                    status: HttpStatus.INTERNAL_SERVER_ERROR,
+                    error: 'Try again in a few seconds',
+                },
+                HttpStatus.INTERNAL_SERVER_ERROR,
+                {
+                    cause: error,
+                },
+            );
         }
     }
 
-    findAll() {
+    findAll(school_id: string) {
         try {
             return this.studentRepository.find({
+                where: {
+                    school_id,
+                },
                 select: {
                     id: true,
+                    first_name: true,
+                    last_name: true,
                     course: true,
                 },
             });
@@ -35,19 +56,19 @@ export class StudentsService {
     }
 
     findOne(id: number) {
-        try {
-            const student = this.studentRepository.findOne({
-                where: { id },
-                select: { id: true, course: true },
-            });
+        const student = this.studentRepository.findOne({
+            where: { id },
+            select: {
+                id: true,
+                first_name: true,
+                last_name: true,
+                course: true,
+                isActive: true,
+            },
+        });
 
-            if (!student) {
-                throw new NotFoundException("Student doesn't exist");
-            }
-
-            return student;
-        } catch (error) {
-            return { message: 'Try again in a few seconds' };
+        if (!student) {
+            throw new NotFoundException("Student doesn't exist");
         }
     }
 
@@ -65,7 +86,16 @@ export class StudentsService {
 
             return { message: 'Student deleted successfully' };
         } catch (error) {
-            return { message: 'Try again in a few seconds' };
+            throw new HttpException(
+                {
+                    status: HttpStatus.INTERNAL_SERVER_ERROR,
+                    error: 'Try again in a few seconds',
+                },
+                HttpStatus.INTERNAL_SERVER_ERROR,
+                {
+                    cause: error,
+                },
+            );
         }
     }
 }

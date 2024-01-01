@@ -1,11 +1,11 @@
 import {
-    Controller,
-    Get,
-    Post,
     Body,
-    Patch,
-    Param,
+    Controller,
     Delete,
+    Get,
+    Param,
+    Patch,
+    Post,
 } from '@nestjs/common';
 import { CandidatesService } from './candidates.service';
 import { CreateCandidateDto } from './dto/create-candidate.dto';
