@@ -1,5 +1,4 @@
-import { Body, Controller, Get, Post, Req, Res } from '@nestjs/common';
-import { Request, Response } from 'express';
+import { Body, Controller, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Public } from './decorators/public';
 // dtos
@@ -13,15 +12,14 @@ export class AuthController {
 
     @Post('signin')
     @Public()
-    signIn(@Body() req: SignInDto, @Res({ passthrough: true }) res: Response) {
-        return this.authService.signin(req, res);
+    signIn(@Body() req: SignInDto) {
+        return this.authService.signin(req);
     }
 
-    @Get('user')
+    @Post('user')
     @Public()
-    getUser(@Req() req: Request) {
-        const token = req.cookies['access_token'] as string;
-        return this.authService.getUser(token);
+    getUser(@Body() id: string) {
+        return this.authService.getUser(id);
     }
 
     @Post('signup')

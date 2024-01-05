@@ -7,7 +7,6 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { compare, hash } from 'bcrypt';
-import { Response } from 'express';
 import { CreateSchoolDto } from 'src/schools/dto/create-school.dto';
 import { School } from 'src/schools/entities/school.entity';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
@@ -27,7 +26,7 @@ export class AuthService {
     ) {}
 
     // Method for user sign-in
-    async signin(req: SignInDto, res: Response): Promise<any> {
+    async signin(req: SignInDto): Promise<any> {
         const { username, password } = req;
         const user = await this.userRepository.findOne({
             where: { username },
@@ -40,32 +39,20 @@ export class AuthService {
             throw new UnauthorizedException('Invalid credentials');
         }
 
-        // Generate access token and store it in a cookie
-        const access_token = await this.jwtService.signAsync({
+        return await this.jwtService.signAsync({
             id: user.id,
             role: user.role,
             username,
         });
-
-        res.cookie('access_token', access_token, {
-            httpOnly: true,
-            maxAge: 3600000,
-            secure: process.env.NODE_ENV === 'production',
-        });
-
-        return access_token;
     }
 
     // Method to get user information from a token
-    async getUser(token: string) {
-        if (!token) {
+    async getUser(id: string) {
+        if (!id) {
             throw new UnauthorizedException('You are not logged in');
         }
-
-        // Verify and decode the token to get data
-        const data = await this.jwtService.verifyAsync(token);
         const user = await this.userRepository.findOne({
-            where: { id: data['id'] },
+            where: { id },
         });
 
         return user;
