@@ -1,6 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { School } from 'src/schools/entities/school.entity';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 
@@ -9,8 +8,6 @@ export class UsersService {
     constructor(
         @InjectRepository(User)
         private readonly userRepository: Repository<User>,
-        @InjectRepository(School)
-        private readonly schoolRepository: Repository<School>,
     ) {}
 
     findUser(id: string) {

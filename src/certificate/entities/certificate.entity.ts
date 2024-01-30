@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Student } from 'src/students/entities/student.entity';
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne } from 'typeorm';
 
 @Entity()
 export class Certificate {
@@ -7,4 +8,7 @@ export class Certificate {
 
     @Column()
     code: string;
+
+    @OneToOne(() => Student, (student) => student.id)
+    student_id: Student;
 }

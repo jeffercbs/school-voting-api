@@ -31,7 +31,7 @@ async function bootstrap() {
 
     app.use(helmet());
     await app.listen(PORT, HOST, () =>
-        console.log(`Server is running on http://${HOST}:${PORT}`),
+        console.log(`Server is running on http://${HOST}:${PORT}/v1`),
     );
 }
 bootstrap();

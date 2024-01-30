@@ -16,11 +16,11 @@ export class Session {
     @OneToOne(() => User, (user) => user.id)
     user_id: User;
 
-    @Column({ type: 'timestamptz' })
+    @Column({ type: 'timestamptz', nullable: false })
     expires_at: Date;
 
     @Column({ type: 'varchar', length: 225 })
-    token: string;
+    session_token: string;
 
     @CreateDateColumn()
     created_at: Date;

@@ -1,11 +1,13 @@
 import { Role } from 'src/auth/decorators/roles';
 import { School } from 'src/schools/entities/school.entity';
+import { Certificate } from 'src/certificate/entities/certificate.entity';
 import {
     Column,
     CreateDateColumn,
     Entity,
     JoinColumn,
     ManyToOne,
+    OneToMany,
     PrimaryColumn,
     UpdateDateColumn,
 } from 'typeorm';
@@ -39,6 +41,9 @@ export class Student {
     @ManyToOne(() => School, (school) => school.students)
     @JoinColumn({ referencedColumnName: 'id' })
     school: School;
+
+    @OneToMany(() => Certificate, (certificate) => certificate.student_id)
+    certificates: Certificate[];
 
     @CreateDateColumn()
     createdAt: Date;

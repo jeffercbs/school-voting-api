@@ -3,16 +3,15 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 
 import { JwtModule } from '@nestjs/jwt';
-// entities
-import { SchoolsModule } from 'src/schools/schools.module';
-import { UsersModule } from 'src/users/users.module';
 // constants
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { School } from 'src/schools/entities/school.entity';
+import { User } from 'src/users/entities/user.entity';
 import { JWT_SECRET } from './constants';
 
 @Module({
     imports: [
-        UsersModule,
-        SchoolsModule,
+        TypeOrmModule.forFeature([School, User]),
         JwtModule.register({
             global: true,
             secret: JWT_SECRET,
